@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PocketPicker</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body class="container text-center">
+<header>
+    <h1>
+        PocketPicker 0.1
+    </h1>
+</header>
+<br/>
+<div id="login" class="text-lg-center">
+    <button class="btn-lg btn-primary" onclick="pocketpicker.login()">Login with pocket</button>
+</div>
+<br>
+<h2 id="unread"></h2>
+<br/>
+<footer class="text-lg-center">
+    created by <a href="https://twitter.com/@pavelpatz">@pavelpatz</a>
+</footer>
+<script type="application/javascript">
+    var redirectUrl = "http://localhost:8000/index.html?authDone"
+    //var redirectUrl = "https://pocketpicker.bluesloth.net/index.html?authDone"
+</script>
+<script src="js/kotlin.js"></script>
+<script src="js/pocketpicker.js"></script>
+`
+</body>
+</html>
