@@ -39,4 +39,4 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: gradle assemble
+      - run: gradle clean assemble sonarqube -Dsonar.projectKey=cdome_pocket-picker -Dsonar.organization=cdome-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=57f6673c70c0d91e5f428db504bc17f6a13b1cc8
