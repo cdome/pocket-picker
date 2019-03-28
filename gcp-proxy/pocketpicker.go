@@ -59,6 +59,7 @@ func get(token interface{}) interface{} {
 	bytesRepresentation, _ := json.Marshal(map[string]interface{}{
 		"consumer_key": apiKey,
 		"access_token": token,
+		"state":        "all",
 	})
 	return postRequest(bytesRepresentation, getUrl)
 }

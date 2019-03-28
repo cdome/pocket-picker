@@ -52,10 +52,45 @@ private fun auth() {
 fun updateUi() {
     document.getElementById("unread")?.innerHTML = "<img width=50 height=50 src='img/spinner.gif'/>"
     postString("""{"action":"get", "token":"${localStorage.getItem(sessTokenStore)}"}""") { body ->
-        val list = JSON.parse<ReadingList>(body)
-        val keys = Object.keys(list.list)
-        document.getElementById("unread")?.innerHTML = "You have ${keys.size} unread items."
+        val values = Object.values(JSON.parse<ReadingList>(body).list)
+        val archived = ArrayList<ListItem>()
+        val unread = ArrayList<ListItem>()
+        val starred = ArrayList<ListItem>()
+        values.forEach { item ->
+            if (item.status == "0") unread.add(item)
+            if (item.status == "1") archived.add(item)
+            if (item.favorite == "1") starred.add(item)
+        }
+        document.getElementById("unread")?.innerHTML =
+            """
+        <table class="table table-bordered">
+            <tr class="table-primary">
+                <th>Total items</th>
+                <th>Unread items</th>
+                <th>Read items</th>
+                <th>Starred items</th>
+                <th>Words to read</th>
+                <th>Remaining reading time</th>
+            </tr>
+            <tr>
+                <td>${values.size}</td>
+                <td>${unread.size}</td>
+                <td>${archived.size}</td>
+                <td>${starred.size}</td>
+                <td>${unread.map { item -> item.word_count?.toInt() ?: 0 }.sum()}</td>
+                <td>${formatMinutes(unread.map { item -> item.time_to_read ?: 0 }.sum())}</td>
+            </tr>
+        </table>
+            """
     }
+}
+
+private fun formatMinutes(totalMinutes: Int): String {
+    val days = totalMinutes / 24 / 60
+    val remainingMinutes = totalMinutes - days * 24 * 60
+    val hours = remainingMinutes / 60
+    val minutes = (remainingMinutes - hours * 60)
+    return "${if (days > 0) "$days days, " else ""} ${if (hours > 0) "$hours hours and " else ""}$minutes minutes"
 }
 
 private fun postJson(payload: String, func: (Json) -> Unit) {
@@ -76,7 +111,6 @@ private fun postJson(payload: String, func: (Json) -> Unit) {
             }
         }
 }
-
 
 private fun postString(payload: String, func: (String) -> Unit) {
     val req = Request(
@@ -102,8 +136,18 @@ external interface ReadingList {
     val list: Map<String, ListItem>
 }
 
-external interface ListItem
+external interface ListItem {
+    val status: String
+    val favorite: String
+    val time_added: String
+    val time_read: String?
+    val time_favorited: String?
+    val time_to_read: Int?
+    val word_count: String?
+}
 
 external object Object {
     fun keys(map: Map<String, *>): Array<String>
+    fun <T> values(map: Map<String, T>): Array<T>
+    fun <T> entries(map: Map<String, T>): Map<String, T>
 }

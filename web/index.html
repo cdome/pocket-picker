@@ -8,7 +8,7 @@
 <body class="container text-center">
 <header>
     <h1>
-        PocketPicker 0.1
+        PocketPicker 0.2
     </h1>
 </header>
 <br/>
@@ -16,8 +16,17 @@
     <button class="btn-lg btn-primary" onclick="pocketpicker.login()">Login with pocket</button>
 </div>
 <br>
-<h2 id="unread"></h2>
-<br/>
+<div id="unread" class="text-lg-center"></div>
+<hr/>
+<div class="col-8 offset-2">
+    <h3>PocketPicker Version history:</h3>
+    <ul class="text-left">
+        <li>0.2 (03/27/19) Displays more comprehensive details about read/unread items and the amount of text to read.
+        </li>
+        <li>0.1 (03/26/19) Initial version. Displays number of unread items.</li>
+    </ul>
+</div>
+<hr/>
 <footer class="text-lg-center">
     created by <a href="https://twitter.com/@pavelpatz">@pavelpatz</a>
 </footer>
@@ -31,7 +40,11 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-134145499-2"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
 
     gtag('config', 'UA-134145499-2');
