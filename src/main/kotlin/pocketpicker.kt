@@ -5,6 +5,7 @@ import org.w3c.fetch.RequestMode
 import kotlin.browser.document
 import kotlin.browser.localStorage
 import kotlin.browser.window
+import kotlin.js.Date
 import kotlin.js.Json
 
 const val proxyUrl = "https://us-central1-hazel-proxy-235401.cloudfunctions.net/PocketPicker"
@@ -26,7 +27,7 @@ fun main() {
 }
 
 private fun updateLoggedInUser() {
-    document.getElementById("login")?.innerHTML = "Logged in as ${localStorage.getItem("userName")}..."
+    document.getElementById("login")?.innerHTML = "Welcome <strong>${localStorage.getItem("userName")}</strong>..."
 }
 
 fun login() {
@@ -61,6 +62,8 @@ fun updateUi() {
             if (item.status == "1") archived.add(item)
             if (item.favorite == "1") starred.add(item)
         }
+        updateActivitySince(values)
+        findDuplicates(values)
         document.getElementById("unread")?.innerHTML =
             """
         <table class="table table-bordered">
@@ -82,6 +85,62 @@ fun updateUi() {
             </tr>
         </table>
             """
+    }
+}
+
+fun formatTimeStamp(timestamp: String?): String = if (timestamp == null || timestamp == "0")
+    "N/A"
+else {
+    Date(timestamp.toLong() * 1000L).toLocaleString("en-us")
+}
+
+fun findDuplicates(values: Array<ListItem>) {
+    val sortedItems = HashMap<String, ArrayList<ListItem>>()
+    values.forEach { item -> sortedItems.getOrPut(item.resolved_id) { ArrayList() }.add(item) }
+    val duplicateItems = sortedItems.filter { item -> item.key != "0" && item.value.size > 1 }
+    if (duplicateItems.isNotEmpty()) {
+        val table = StringBuilder("<div>You have ${duplicateItems.size} duplicate items on your list:</div>")
+        table.append(
+            """
+        <table class="table table-bordered">
+            <tr class="table-primary">
+                <th>Title</th>
+                <th>URL</th>
+                <th>Added</th>
+                <th>Read</th>
+            </tr>
+        """
+        )
+
+        duplicateItems.values.forEach { items ->
+            items.forEach { item ->
+                table.append(
+                    """
+                <tr>
+                    <td>${item.given_title}</td>
+                    <td>${item.given_url}</td>
+                    <td>${formatTimeStamp(item.time_added)}</td>
+                    <td>${formatTimeStamp(item.time_read)}</td>
+                </tr>
+            """
+                )
+            }
+        }
+
+        table.append("</table>")
+
+        document.getElementById("duplicates")?.innerHTML = table.toString()
+    } else {
+        document.getElementById("duplicates")?.innerHTML = "Congrats! You have no duplicate items on your list."
+    }
+}
+
+private fun updateActivitySince(values: Array<ListItem>) {
+    val firstItem =
+        values.filter { item -> item.time_added != "0" }.map { item -> item.time_added.toLong() }.min()
+    firstItem?.let {
+        document.getElementById("since")?.innerHTML =
+            "You are active on Pocket since ${Date(firstItem * 1000L).toDateString()}"
     }
 }
 
@@ -137,6 +196,8 @@ external interface ReadingList {
 }
 
 external interface ListItem {
+    val item_id: String
+    val resolved_id: String
     val status: String
     val favorite: String
     val time_added: String
@@ -144,6 +205,8 @@ external interface ListItem {
     val time_favorited: String?
     val time_to_read: Int?
     val word_count: String?
+    val given_url: String
+    val given_title: String
 }
 
 external object Object {

@@ -8,22 +8,26 @@
 <body class="container text-center">
 <header>
     <h1>
-        PocketPicker 0.2
+        PocketPicker 0.3
     </h1>
 </header>
 <br/>
 <div id="login" class="text-lg-center">
     <button class="btn-lg btn-primary" onclick="pocketpicker.login()">Login with pocket</button>
 </div>
-<br>
+<div id="since"></div>
+<br/>
 <div id="unread" class="text-lg-center"></div>
+<br/>
+<div id="duplicates" class="text-lg-center"></div>
+<br/>
 <hr/>
 <div class="col-8 offset-2">
     <h3>PocketPicker Version history:</h3>
     <ul class="text-left">
-        <li>0.2 (03/27/19) Displays more comprehensive details about read/unread items and the amount of text to read.
-        </li>
-        <li>0.1 (03/26/19) Initial version. Displays number of unread items.</li>
+        <li>0.3 (03/28/19) Now with duplicated items detection!
+        <li>0.2 (03/27/19) Displays more interesting stats, now in color (table)!</li>
+        <li>0.1 (03/26/19) Displays the number of unread items in your Pocket. Yay!</li>
     </ul>
 </div>
 <hr/>
@@ -31,8 +35,8 @@
     created by <a href="https://twitter.com/@pavelpatz">@pavelpatz</a>
 </footer>
 <script type="application/javascript">
-    var redirectUrl = "http://localhost:8000/index.html?authDone"
-    //var redirectUrl = "https://pocketpicker.bluesloth.net/index.html?authDone"
+    //var redirectUrl = "http://localhost:8000/index.html?authDone"
+    var redirectUrl = "https://pocketpicker.bluesloth.net/index.html?authDone"
 </script>
 <script src="js/kotlin.js"></script>
 <script src="js/pocketpicker.js"></script>
