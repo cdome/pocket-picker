@@ -26,10 +26,12 @@ apply plugin: 'org.jetbrains.kotlin.frontend'
 
 repositories {
     jcenter()
+    //maven { url "https://kotlin.bintray.com/js-externals" }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    //compileOnly 'kotlin.js.externals:kotlin-js-jquery:3.2.0-0'
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 
@@ -61,7 +63,9 @@ compileTestKotlin2Js {
 kotlinFrontend {
     downloadNodeJsVersion = "latest"
     npm {
-        dependency "bootstrap"
+        //dependency "bootstrap"
+        //dependency("jquery", "^3.3.1")
+        //dependency "@kotlin-externals/jquery"
         devDependency "karma"
     }
 
@@ -71,4 +75,3 @@ kotlinFrontend {
         mode = "development"
     }
 }
-

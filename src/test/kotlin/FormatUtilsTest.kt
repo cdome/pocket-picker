@@ -1,9 +1,11 @@
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class FormatUtilsTest {
     private var format = FormatUtils()
 
+    @BeforeTest
     fun init() {
         format = FormatUtils()
     }

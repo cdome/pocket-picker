@@ -52,7 +52,7 @@ private fun auth() {
 }
 
 private fun updateUi() {
-    document.getElementById("unread")?.innerHTML = "<img width=50 height=50 src='img/spinner.gif'/>"
+    updateElement("unread", "<img width=50 height=50 src='img/spinner.gif'/>")
     http.postString("""{"action":"get", "token":"${localStorage.getItem(sessTokenStore)}"}""") { body ->
         val values = Object.values(JSON.parse<ReadingList>(body).list)
         val archived = ArrayList<ListItem>()
@@ -114,7 +114,7 @@ private fun findDuplicates(values: Array<ListItem>) {
                     """
                 <tr>
                     <td>${if (item.given_title != "") item.given_title else item.resolved_title}</td>
-                    <td>${item.given_url}</td>
+                    <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">${item.given_url}</td>
                     <td>${format.formatTimeStamp(item.time_added)}</td>
                     <td>${format.formatTimeStamp(item.time_read)}</td>
                     <td><a href="https://app.getpocket.com/read/${item.item_id}" class="btn btn-primary">Open in Pocket</a></td>
@@ -130,6 +130,10 @@ private fun findDuplicates(values: Array<ListItem>) {
     } else {
         document.getElementById("duplicates")?.innerHTML = "Congrats! You have no duplicate items on your list."
     }
+}
+
+private fun updateElement(id: String, content: String) {
+    document.getElementById(id)?.innerHTML = content
 }
 
 private fun updateActivitySince(values: Array<ListItem>) {
