@@ -12,4 +12,5 @@ external interface ListItem {
     val word_count: String?
     val given_url: String
     val given_title: String
+    val resolved_title: String
 }

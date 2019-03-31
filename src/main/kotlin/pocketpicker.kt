@@ -103,6 +103,7 @@ private fun findDuplicates(values: Array<ListItem>) {
                 <th>URL</th>
                 <th>Added</th>
                 <th>Read</th>
+                <th>Actions</th>
             </tr>
         """
         )
@@ -112,10 +113,11 @@ private fun findDuplicates(values: Array<ListItem>) {
                 table.append(
                     """
                 <tr>
-                    <td>${item.given_title}</td>
+                    <td>${if (item.given_title != "") item.given_title else item.resolved_title}</td>
                     <td>${item.given_url}</td>
                     <td>${format.formatTimeStamp(item.time_added)}</td>
                     <td>${format.formatTimeStamp(item.time_read)}</td>
+                    <td><a href="https://app.getpocket.com/read/${item.item_id}" class="btn btn-primary">Open in Pocket</a></td>
                 </tr>
             """
                 )
