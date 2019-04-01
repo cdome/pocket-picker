@@ -24,4 +24,9 @@ class FormatUtils {
         else -> "$value ${unit}s$suffix"
     }
 
+    fun shortenText(string: String) = if (string.length <= 70) {
+        string
+    } else {
+        string.substring(0, 34) + "..." + string.substring(string.length - 33, string.length)
+    }
 }

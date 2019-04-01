@@ -1,9 +1,11 @@
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class FormatUtilsTest {
     private var format = FormatUtils()
 
+    @BeforeTest
     fun init() {
         format = FormatUtils()
     }
@@ -26,5 +28,14 @@ class FormatUtilsTest {
         //assertTrue(timestamp.contains("10:33"), "Contains time part")
         assertEquals("N/A", format.formatTimeStamp("0"))
         assertEquals("N/A", format.formatTimeStamp(null))
+    }
+
+    @Test
+    fun testShortenText() {
+        val longText =
+            "https://www.washingtonpost.com/business/economy/despite-pause-in-trade-war-us-and-chinas-economic-relationship-is-forever-changed/2018/12/02/ea79fb58-f666-11e8-8c9a-860ce2a8148f_story.html?wpisrc=nl_rainbow&wpmm=1"
+        val shortenedText = "https://www.washingtonpost.com/bus...ory.html?wpisrc=nl_rainbow&wpmm=1"
+        assertEquals("aaa", format.shortenText("aaa"))
+        assertEquals(shortenedText, format.shortenText(longText))
     }
 }

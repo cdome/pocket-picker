@@ -61,7 +61,7 @@ compileTestKotlin2Js {
 kotlinFrontend {
     downloadNodeJsVersion = "latest"
     npm {
-        dependency "bootstrap"
+        //dependency "bootstrap"
         devDependency "karma"
     }
 
