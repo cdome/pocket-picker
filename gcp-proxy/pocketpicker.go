@@ -71,7 +71,9 @@ func postRequest(payload []byte, url string) interface{} {
 	}
 	req.Header.Set("Content-Type", contentTypeJson)
 	req.Header.Set("X-Accept", acceptJson)
+	log.Print("Sending request to ", url)
 	resp, err := client.Do(req)
+	log.Print("Received response from ", url)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -85,5 +87,6 @@ func postRequest(payload []byte, url string) interface{} {
 
 func getString(resp *http.Response) string {
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	log.Print("Processed ", len(bodyBytes), " bytes")
 	return string(bodyBytes)
 }
