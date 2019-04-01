@@ -1,3 +1,6 @@
+package utils
+
+import org.w3c.dom.url.URL
 import kotlin.js.Date
 
 class FormatUtils {
@@ -5,6 +8,12 @@ class FormatUtils {
         "N/A"
     else {
         Date(timestamp.toLong() * 1000L).toLocaleString("en-us")
+    }
+
+    fun formatDate(timestamp: String?): String = if (timestamp == null || timestamp == "0")
+        "N/A"
+    else {
+        Date(timestamp.toLong() * 1000L).toLocaleDateString("en-us")
     }
 
     fun formatMinutes(totalMinutes: Int): String {
@@ -16,6 +25,12 @@ class FormatUtils {
             minutes,
             "minute"
         )}"
+    }
+
+    fun findSource(resolvedUrl: String?, givenUrl: String): String = try {
+        URL(if (resolvedUrl == null || resolvedUrl.isEmpty()) givenUrl else resolvedUrl).host
+    } catch (e: Exception) {
+        "N/A"
     }
 
     private fun fmtTimeUnit(value: Int, unit: String, suffix: String = "") = when (value) {

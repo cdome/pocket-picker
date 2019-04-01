@@ -1,12 +1,13 @@
-import model.ListItem
-import model.ReadingList
+import jquery.jq
+import model.*
 import support.Object
+import utils.FormatUtils
+import utils.HttpUtils
 import kotlin.browser.document
 import kotlin.browser.localStorage
 import kotlin.browser.window
 import kotlin.js.Date
 
-const val proxyUrl = "https://us-central1-hazel-proxy-235401.cloudfunctions.net/PocketPicker"
 const val authUrl = "https://getpocket.com/auth/authorize"
 
 const val reqTokenStore = "requestToken"
@@ -52,7 +53,7 @@ private fun auth() {
 }
 
 private fun updateUi() {
-    document.getElementById("unread")?.innerHTML = "<img width=50 height=50 src='img/spinner.gif'/>"
+    document.getElementById("unread")?.innerHTML = "<img width=50 height=50 src='images/spinner.gif'/>"
     http.postString("""{"action":"get", "token":"${localStorage.getItem(sessTokenStore)}"}""") { body ->
         val values = Object.values(JSON.parse<ReadingList>(body).list)
         val archived = ArrayList<ListItem>()
@@ -86,6 +87,10 @@ private fun updateUi() {
             </tr>
         </table>
             """
+        openTable(getFullItemsTableData(values.asList()), "all")
+        jq("#allButton").click { openTable(getFullItemsTableData(values.asList()), "all") }
+        jq("#unreadButton").click { openTable(getUnreadItemsTableData(unread), "unread") }
+        jq("#readButton").click { openTable(getFullItemsTableData(archived), "read") }
     }
 }
 
@@ -98,7 +103,7 @@ private fun findDuplicates(values: Array<ListItem>) {
         table.append(
             """
         <table class="table table-bordered">
-            <tr class="table-primary">
+            <tr>
                 <th>Title</th>
                 <th>URL</th>
                 <th>Added</th>
@@ -117,7 +122,7 @@ private fun findDuplicates(values: Array<ListItem>) {
                     <td>${format.shortenText(item.given_url)}</td>
                     <td>${format.formatTimeStamp(item.time_added)}</td>
                     <td>${format.formatTimeStamp(item.time_read)}</td>
-                    <td><a href="https://app.getpocket.com/read/${item.item_id}" class="btn btn-primary">Open in Pocket</a></td>
+                    <td><a href="https://app.getpocket.com/read/${item.item_id}" class="btn btn-primary" target='_blank'>Open in Pocket</a></td>
                 </tr>
             """
                 )
@@ -140,3 +145,19 @@ private fun updateActivitySince(values: Array<ListItem>) {
             "You are active on Pocket since ${Date(firstItem * 1000L).toDateString()}"
     }
 }
+
+fun openTable(data: TableData, type: String) {
+    jq("#allButton").removeClass("btn-secondary")
+    jq("#readButton").removeClass("btn-secondary")
+    jq("#unreadButton").removeClass("btn-secondary")
+
+    jq("#allTable").asDynamic().hide()
+    jq("#readTable").asDynamic().hide()
+    jq("#unreadTable").asDynamic().hide()
+
+    jq("#${type}Button").addClass("btn-secondary")
+
+    jq("#${type}Table").asDynamic().columns(data)
+    jq("#${type}Table").asDynamic().fadeIn()
+}
+

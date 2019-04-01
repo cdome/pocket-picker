@@ -11,6 +11,12 @@ external interface ListItem {
     val time_to_read: Int?
     val word_count: String?
     val given_url: String
+    val resolved_url: String
     val given_title: String
     val resolved_title: String
+}
+
+external interface ReadingList {
+    val status: String?
+    val list: Map<String, ListItem>
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PocketPicker</title>
+    <title>PocketPicker 0.4</title>
     <link rel="stylesheet" href="css/bootstrap.css">
 </head>
 <body class="container text-center">
@@ -19,13 +19,24 @@
 <br/>
 <div id="unread" class="text-lg-center"></div>
 <br/>
+<h2>Duplicate items</h2>
 <div id="duplicates" class="text-lg-center"></div>
+<br/>
+<h2>Items</h2>
+<button id="allButton" class="btn btn-secondary">All</button>
+<button id="unreadButton" class="btn">Unread</button>
+<button id="readButton" class="btn">Read</button>
+<div id="allTable" class="table table-bordered"></div>
+<div id="unreadTable" class="table table-bordered"></div>
+<div id="readTable" class="table table-bordered"></div>
 <br/>
 <hr/>
 <div class="col-8 offset-2">
-    <h3>PocketPicker Version history:</h3>
+    <h2>PocketPicker Version history:</h2>
     <ul class="text-left">
-        <li>0.4</li>
+        <li>0.4 (03/31/19) Lots of internal architectural changes you can't see! And (sortable/searchable) table with
+            your items as a bonus...
+        </li>
         <li>0.3 (03/28/19) Now with duplicated items detection!
         <li>0.2 (03/27/19) Displays more interesting stats, now in color (table)!</li>
         <li>0.1 (03/26/19) Displays the number of unread items in your Pocket. Yay!</li>
@@ -33,14 +44,17 @@
 </div>
 <hr/>
 <footer class="text-lg-center">
-    created by <a href="https://twitter.com/@pavelpatz">@pavelpatz</a>
+    created by <a href="https://twitter.com/pavelpatz">@pavelpatz</a><br/>
+    kudos for the first feature request ever made by <a href="https://twitter.com/dkvasnickajr">@dkvasnickajr</a>
 </footer>
 <script type="application/javascript">
     var redirectUrl = "http://localhost:8088/index.html?authDone"
     //var redirectUrl = "https://pocketpicker.bluesloth.net/index.html?authDone"
 </script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="js/jquery.columns.min.js"></script>
 <script src="main.bundle.js"></script>
-
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-134145499-2"></script>
 <script>
     window.dataLayer = window.dataLayer || [];

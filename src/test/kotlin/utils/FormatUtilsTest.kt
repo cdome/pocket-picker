@@ -1,3 +1,5 @@
+package utils
+
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

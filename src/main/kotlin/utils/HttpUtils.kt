@@ -1,9 +1,13 @@
+package utils
+
 import org.w3c.fetch.CORS
 import org.w3c.fetch.Request
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.RequestMode
 import kotlin.browser.window
 import kotlin.js.Json
+
+const val proxyUrl = "https://us-central1-hazel-proxy-235401.cloudfunctions.net/PocketPicker"
 
 class HttpUtils {
     fun postString(payload: String, func: (String) -> Unit) {
